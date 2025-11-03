@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宝藏？</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .message-window {
+            position: fixed;
+            width: 220px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: default;
+            user-select: none;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* 颜色样式 */
+        .pink { background: linear-gradient(135deg, #ffb6c1, #ff69b4); }
+        .lightblue { background:linear-gradient(135deg,#add8e6,#6150c1); }
+        .lightgreen { background:linear-gradient(135deg,#90ee90,#36bab8); }
+        .lightyellow { background:linear-gradient(135deg, #ffffe0,#fb8a00); }
+        .lavender { background:linear-gradient(135deg,#e6e6fa,#9da6e8); }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #6b4caf;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #4595a0;
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        /* 最终消息样式 */
+        .final-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 100px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .final-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;font-size: 30px;">
+        <button onclick="startWindows()">来吧，该领取你的宝藏了</button>
+        <button onclick="closeAllWindows()">👀</button>
+    </h1>
+    
+    <div id="finalMessage" class="final-message">恭喜你发现宝藏🎉🎉🎉</div>
+
+    <script>
+        const textList = [
+            "别熬夜(❁´◡`❁)", "早点休息ᓚᘏᗢ", "诸事顺利(●'◡'●)", "梦想成真(👉ﾟヮﾟ)👉", "所有烦恼都消失😘",
+            "很高兴认识你○( ＾皿＾)っHiahiahia…", "期待我们下次见面┏ (゜ω゜)=👉", "今天的你辛苦啦:D", "好好吃饭😶‍🌫️",
+            "祝你天天开心( •̀ ω •́ )y", "天冷了，记得加衣服(。・∀・)ノ", "今天有过的开心吗👈(ﾟヮﾟ👈)", "好好爱自己🥰", "记得多吃水果😍"
+        ];
+
+        const colors = ['pink', 'lightblue', 'lightgreen', 'lightyellow', 'lavender'];
+        let windows = [];
+        let isRunning = false;
+        let closeTimer = null;
+
+        function getRandomPosition() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const x = Math.floor(Math.random() * (screenWidth - 220));
+            const y = Math.floor(Math.random() * (screenHeight - 50));
+            return { x, y };
+        }
+
+        function createWindow() {
+            const { x, y } = getRandomPosition();
+            const randomText = textList[Math.floor(Math.random() * textList.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const windowElement = document.createElement('div');
+            windowElement.className = `message-window ${randomColor}`;
+            windowElement.style.left = `${x}px`;
+            windowElement.style.top = `${y}px`;
+            windowElement.textContent = randomText;
+            windowElement.title = "tips";
+
+            document.body.appendChild(windowElement);
+            windows.push(windowElement);
+
+            // 10秒后淡出消失
+            setTimeout(() => {
+                if (windowElement.parentNode) {
+                    windowElement.style.opacity = '0';
+                    setTimeout(() => {
+                        if (windowElement.parentNode) {
+                            windowElement.parentNode.removeChild(windowElement);
+                            windows = windows.filter(w => w !== windowElement);
+                            checkAllWindowsClosed();
+                        }
+                    }, 500);
+                }
+            }, 10000);
+        }
+
+        function startWindows() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            const totalWindows = 200;
+            let createdCount = 0;
+            
+            // 禁用开始按钮
+            document.querySelector('button').disabled = true;
+            // 隐藏最终消息
+            document.getElementById('finalMessage').classList.remove('show');
+
+            function createNextWindow() {
+                if (createdCount < totalWindows && isRunning) {
+                    createWindow();
+                    createdCount++;
+                    
+                    // 控制创建速度
+                    setTimeout(createNextWindow, 50);
+                } else {
+                    isRunning = false;
+                    document.querySelector('button').disabled = false;
+                }
+            }
+            
+            createNextWindow();
+        }
+
+        function closeAllWindows() {
+            isRunning = false;
+            windows.forEach(window => {
+                window.style.opacity = '0';
+                setTimeout(() => {
+                    if (window.parentNode) {
+                        window.parentNode.removeChild(window);
+                    }
+                }, 500);
+            });
+            windows = [];
+            document.querySelector('button').disabled = false;
+            
+            // 显示最终消息
+            document.getElementById('finalMessage').classList.add('show');
+        }
+
+        // 检查所有窗口是否已关闭
+        function checkAllWindowsClosed() {
+            if (windows.length === 0 && !isRunning) {
+                // 显示最终消息
+                document.getElementById('finalMessage').classList.add('show');
+            }
+        }
+
+        // 防止右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.classList.contains('message-window')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

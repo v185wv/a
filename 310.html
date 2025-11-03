@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>费克娄可申</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e44ff;
+            --secondary: #b892ff;
+            --accent: #ff44a8;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #4bb543;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483);
+            background-size: 400% 400%;
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            animation: gradientShift 15s ease infinite;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(110, 68, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 68, 168, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .card h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .demo-area {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000%) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .animated-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            margin: 20px auto;
+            animation: rotate 4s linear infinite, pulse 2s ease-in-out infinite alternate;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(0.9); }
+            to { transform: scale(1.1); }
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+        
+        .deployment-steps {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .deployment-steps li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            animation: slideInRight 0.5s ease;
+        }
+        
+        .deployment-steps li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .deployment-steps li i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--secondary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .github-btn:hover {
+            background: #444;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .animated-text {
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <div class="container">
+        <header>
+            <h1>恭喜你找到了宝藏点！！！</h1>
+            <p class="subtitle">欢迎来到“费克娄可申”，先别急着找宝藏，看到这里你可能还有许多疑问，不过没关系，你将在接下来的旅程中找到答案😶‍🌫️</p >
+        </header>
+           
+        <div class="card-container">
+            <div class="card">
+                <h2><i class="fas fa-rocket"></i>同道中人？！</h2>
+                <p>终于等到你了，年轻人😍</p >
+                <h3>先让我看看你的实力吧😘</h3>
+                <p class="subtitle">测试你的知识，解锁下一个关卡</p >
+                
+                <div class="question-box">
+                    <div class="question">问题：填写横线上的内容</div>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>CSS代码</span>
+                            <span><i class="fas fa-code"></i></span>
+                        </div>
+                        <div class="code-body">
+                            <pre><code>.box {
+            width: 200px;
+            height: 200px;
+            /* 背景设置为蓝色 */
+            <span class="blank">__________________</span>;
+            border-radius: 50%;
+        }</code></pre>
+                        </div>
+                    </div>
+    
+                <div class="answer-form">
+                    <div class="input-group">
+                        <input type="text" id="answer" placeholder="请输入你的答案..." autocomplete="off">
+                    </div>
+                    <button id="submit-btn">提交答案</button>
+                </div>
+                
+                <div id="message" class="message"></div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="progress-text">进度: <span id="progress-text">0%</span></div>
+                </div>
+                <div class="demo-area">
+                    <ol class="deployment-steps">
+                        <li>
+                            <div>
+                                <a href="./230.html" style="text-decoration: none;color: white;">
+                                <strong>阿巴阿巴阿巴</strong>
+                                <p>看不懂思密达<@_@></p >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const answerInput = document.getElementById('answer');
+            const submitBtn = document.getElementById('submit-btn');
+            const messageDiv = document.getElementById('message');
+            const progressBar = document.getElementById('progress');
+            const progressText = document.getElementById('progress-text');
+            
+            // 正确答案
+            const correctAnswer = "background: blue";
+            // 更新进度
+            function updateProgress(percentage) {
+                progressBar.style.width = percentage + '%';
+                progressText.textContent = percentage + '%';
+            }
+            
+            // 初始进度
+            updateProgress(0);
+            
+            // 提交答案
+            submitBtn.addEventListener('click', checkAnswer);
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            function checkAnswer() {
+                const userAnswer = answerInput.value.trim();
+                
+                if (!userAnswer) {
+                    showMessage('请输入答案！', 'error');
+                    answerInput.classList.add('shake');
+                    setTimeout(() => answerInput.classList.remove('shake'), 500);
+                    return;
+                }
+                
+                // 检查答案是否正确
+                if (userAnswer === correctAnswer ) {
+                    showMessage('答案正确！正在跳转...', 'success');
+                    updateProgress(100);
+                    
+                    // 延迟跳转，让用户看到成功消息
+                    setTimeout(() => {
+                        // 在实际应用中，这里应该跳转到另一个页面
+                        // window.location.href = "success.html";
+                        
+                        // 这里我们只是模拟跳转
+                        document.body.innerHTML = `
+                            <div class="container">
+                                <h1>恭喜！</h1>
+                                <p class="subtitle">你已回答正确！</p >
+                                <div style="font-size: 5rem; margin: 30px 0;">🎉</div>
+                                <p style="margin: 20px 0;">正确答案是: ${correctAnswer}</p >
+                                <button><a href="./311.html">点我，前往下一站</a></button>
+                            </div>
+                        `;
+                    }, 1500);
+                } else {
+                    showMessage('答案错误，请再试一次！', 'error');
+                    answerInput.classList.add('shake');
+                    setTimeout(() => answerInput.classList.remove('shake'), 500);
+                    updateProgress(50); // 错误时显示部分进度
+                } 
+            }
+            
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = 'message ' + type;
+                messageDiv.style.display = 'block';
+                
+                // 3秒后自动隐藏消息（错误消息）
+                if (type === 'error') {
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                }
+            }
+        });
+    </script>
+</body>
+   
