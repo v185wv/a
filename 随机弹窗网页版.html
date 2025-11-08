@@ -50,149 +50,149 @@
         button {
             padding: 10px 20px;
             margin: 5px;
-            边境: 没有人;
-            边界半径: 5px;
-            背景: #6b4caf;
-            颜色: 白色;
-            光标: 指针;
-            字体大小: 14px;
+            border: none;
+            border-radius: 5px;
+            background: #6b4caf;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
         }
         
-        按钮:盘旋 {
-            背景: #4595a0;
+        button:hover {
+            background: #4595a0;
         }
         
-        按钮:有缺陷的 {
-            背景：#中交中信中信;
-            光标: 不允许;
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
         }
         
         /* 最终消息样式 */
-        .最终消息 {
-            位置: 已修复;
-            顶端: 50%;
-            左边的: 50%;
-            改变: 翻译(-50%, -50%);
-            宽度: 300px;
-            高度: 100px;
-            背景: 线性梯度(135度、#ffb6c1、#ff69b4);
-            边界半径: 15px;
-            显示: 弯曲;
-            对齐项目: 中心;
-            证明内容: 中心;
-            字体系列: “微软雅黑”, 无衬线;
-            字体大小: 24px;
-            字体重量: 大胆的;
-            颜色: #fff;
-            文本对齐: 中心;
-            框影: 0 8px 25px rgba(255, 105, 180, 0.5);
-            z指数: 10000;
-            不透明: 0;
-            过渡: 不透明 1的 缓解, 改变 1的 缓解;
-            动画: 心跳 1.5的 无限;
+        .final-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 100px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+            animation: heartbeat 1.5s infinite;
         }
         
-        @关键帧 心跳 {
-            0% { 改变: 翻译(-50%, -50%) 规模(1); }
-            50% { 改变: 翻译(, ) 规模(1.05); }
-100% { 转换: 翻译%， -50%） 比例（1）； }{ 改变: 翻译(-50%, -50%) 规模(1); }
-        }}
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
         
-        .最终消息.显示 {
-不透明度:1；不透明: 1;
-        }}
-    </风格>
-</头>
-<身体>
-    <h1 风格="文本对齐:中心；字体大小:30px；">
-        <按钮 点击=">启动窗口</按钮>
-        <按钮 点击=">关闭所有窗口</按钮>
+        .final-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;font-size: 30px;">
+        <button onclick="startWindows()">戳戳我💕</button>
+        <button onclick="closeAllWindows()">👀</button>
     </h1>
     
-    <div 身份证件="最终消息" 班级="最后信息">>宝藏献给如一品红般热情洋溢的你🤩div>
+    <div id="finalMessage" class="final-message">宝藏献给如一品红般热情洋溢的你🤩</div>
 
-    <脚本>
-        常量 文本列表 = [
-            "别熬夜(❁´◡`❁)", "早点休息ᓚᘏᗢ", "诸事顺利(●'◡'●)", 梦想成真👉ﾟヮﾟ）👉。, "所有烦恼都消失😘",
-            “很高兴认识你○( ＾皿＾)希亚希亚。”, "期待我们下次见面┏ (゜ω゜)=👉", "今天的你辛苦啦:D", "好好吃饭😶‍🌫️",
+    <script>
+        const textList = [
+            "别熬夜(❁´◡`❁)", "早点休息ᓚᘏᗢ", "诸事顺利(●'◡'●)", "梦想成真(👉ﾟヮﾟ)👉", "所有烦恼都消失😘",
+            "很高兴认识你○( ＾皿＾)っHiahiahia…", "期待我们下次见面┏ (゜ω゜)=👉", "今天的你辛苦啦:D", "好好吃饭😶‍🌫️",
             "祝你天天开心( •̀ ω •́ )y", "天冷了，记得加衣服(。・∀・)ノ", "今天有过的开心吗👈(ﾟヮﾟ👈)", "好好爱自己🥰", "记得多吃水果😍"
         ];
 
-        常量 彩色 = ["粉红色", ‘浅蓝色’, “浅绿色”, ‘浅黄色’, 薰衣草;
-        让 窗户 = [;
-        让 正在运行 = 假;
-        让 关闭计时器 = 空;
+        const colors = ['pink', 'lightblue', 'lightgreen', 'lightyellow', 'lavender'];
+        let windows = [];
+        let isRunning = false;
+        let closeTimer = null;
 
-        功能获取随机位置() {
-            常量 屏幕宽度 = 窗口.内宽;
-            常量 屏幕高度 = 窗口.内部高度;
-            常量 x = 数学.(数学.() * (屏幕宽度 - ));
-            常量 y = 数学.(数学.() * (屏幕高度 - ));
-            返回 { x, y };
+        function getRandomPosition() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const x = Math.floor(Math.random() * (screenWidth - 220));
+            const y = Math.floor(Math.random() * (screenHeight - 50));
+            return { x, y };
         }
 
-        功能创建窗口() {
-            常量 { x, y } = 获取随机位置();
-            常量 randomText = 文本列表[数学.(数学.() * 文本列表.长度);
-            常量 随机颜色 = 彩色[数学.(数学.() * 彩色.长度);
+        function createWindow() {
+            const { x, y } = getRandomPosition();
+            const randomText = textList[Math.floor(Math.random() * textList.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-            常量 窗口元素 = 文档.('div');
-            窗口元素.类名 = “消息窗口”${随机颜色};
-            窗口元素.风格.左边的 = ${x}px';
-            窗口元素.风格.顶端 = ${y}px';
-            窗口元素.文本内容 = randomText;
-            窗口元素.标题 = "小费";
+            const windowElement = document.createElement('div');
+            windowElement.className = `message-window ${randomColor}`;
+            windowElement.style.left = `${x}px`;
+            windowElement.style.top = `${y}px`;
+            windowElement.textContent = randomText;
+            windowElement.title = "tips";
 
-            文档.身体.(窗口元素);
-            窗户.(窗口元素);
+            document.body.appendChild(windowElement);
+            windows.push(windowElement);
 
             // 10秒后淡出消失
-            设置超时(() => {
-                如果(wi窗口元素威父节点) {
-                    窗口元素.风格.不透明 = '0';
-                    设置超时(() => {
-                        如果(风owE窗口元素.父节点) {
-                            窗口元素.父节点.(窗口元素);
-                            窗户 = 窗户.(w => w !== 窗口元素);
-检查所有视窗关闭();
+            setTimeout(() => {
+                if (windowElement.parentNode) {
+                    windowElement.style.opacity = '0';
+                    setTimeout(() => {
+                        if (windowElement.parentNode) {
+                            windowElement.parentNode.removeChild(windowElement);
+                            windows = windows.filter(w => w !== windowElement);
+                            checkAllWindowsClosed();
                         }
-                    }, );
+                    }, 500);
                 }
-            }, );
+            }, 10000);
         }
 
-        功能 启动窗口() {
-            如果(IsRu正在运行)伊斯鲁返回;
+        function startWindows() {
+            if (isRunning) return;
             
-            正在运行= 真实的;
-            常量 总窗口 = 200;
-            让 创建数量 = 0;
+            isRunning = true;
+            const totalWindows = 200;
+            let createdCount = 0;
             
             // 禁用开始按钮
-            文档.querySelector("按钮").有缺陷的 = 真实的;
+            document.querySelector('button').disabled = true;
             // 隐藏最终消息
-            文档.请求编号('最终消息').类列表.删除("表演");
+            document.getElementById('finalMessage').classList.remove('show');
 
-            功能 创建下一个窗口() {
-                如果(克拉tedCount < 总Windows && 正在运行) {
-                    创建窗口();
-                    创建数量++;
+            function createNextWindow() {
+                if (createdCount < totalWindows && isRunning) {
+                    createWindow();
+                    createdCount++;
                     
                     // 控制创建速度
-                    设置超时(创建下一个窗口, 50);
-                } 其他的 {
-                    正在运行= 假;
-                    文档.querySelector('button').disabled = 假;
+                    setTimeout(createNextWindow, 50);
+                } else {
+                    isRunning = false;
+                    document.querySelector('button').disabled = false;
                 }
             }
             
             createNextWindow();
         }
 
-        功能 关闭所有Windows() {
-            isRunning = 假;
-            窗户.forEach(窗口 => {
-                窗口.风格.不透明 = '0';
+        function closeAllWindows() {
+            isRunning = false;
+            windows.forEach(window => {
+                window.style.opacity = '0';
                 setTimeout(() => {
                     if (window.parentNode) {
                         window.parentNode.removeChild(window);
@@ -222,5 +222,4 @@
         });
     </script>
 </body>
-
 </html>
